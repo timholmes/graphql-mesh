@@ -1,8 +1,8 @@
-const { Server, loadPackageDefinition, ServerCredentials } = require('@grpc/grpc-js');
-const { load } = require('@grpc/proto-loader');
-const { join } = require('path');
+import { Server, loadPackageDefinition, ServerCredentials, ServiceClientConstructor } from '@grpc/grpc-js';
+import { load } from '@grpc/proto-loader';
+import { join } from 'path';
 
-const wrapServerWithReflection = require('grpc-node-server-reflection').default;
+import wrapServerWithReflection from 'grpc-node-server-reflection';
 const seconds = Date.now();
 
 const Genre = {
@@ -44,14 +44,14 @@ const Movies = [
   },
 ];
 
-module.exports = async function startServer(subscriptionInterval = 1000) {
+export default async function startServer(subscriptionInterval = 1000) {
   const server = wrapServerWithReflection(new Server());
 
   const packageDefinition = await load('./service.proto', {
     includeDirs: [join(__dirname, './proto')],
   });
   const grpcObject = loadPackageDefinition(packageDefinition);
-  server.addService(grpcObject.MoviesService.service, {
+  server.addService((grpcObject.MoviesService as ServiceClientConstructor).service, {
     getMovies(call, callback) {
       const result = Movies.filter(movie => {
         for (const [key, value] of Object.entries(call.request.movie)) {
@@ -64,7 +64,7 @@ module.exports = async function startServer(subscriptionInterval = 1000) {
       callback(null, moviesResult);
     },
   });
-  server.addService(grpcObject.MovieSearchService.service, {
+  server.addService((grpcObject.MovieSearchService as ServiceClientConstructor).service, {
     searchMoviesByCast(call) {
       const input = call.request;
       call.on('error', error => {
@@ -95,4 +95,4 @@ module.exports = async function startServer(subscriptionInterval = 1000) {
     console.log('gRPC Server started, listening: 0.0.0.0:' + port);
   });
   return server;
-};
+}
