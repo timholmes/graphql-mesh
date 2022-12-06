@@ -24,7 +24,7 @@ export function createApp() {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
   });
 

@@ -15,7 +15,7 @@ describe('JSON Schema Example', () => {
     expect(
       printSchema(lexicographicSortSchema(schema), {
         descriptions: false,
-      })
+      }),
     ).toMatchSnapshot();
   });
   it('should give correct response', async () => {

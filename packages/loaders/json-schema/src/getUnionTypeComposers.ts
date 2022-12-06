@@ -20,7 +20,10 @@ const ONE_OF_DEFINITION = /* GraphQL */ `
 export interface GetUnionTypeComposersOpts {
   schemaComposer: SchemaComposer;
   ajv: Ajv;
-  typeComposersList: { input?: AnyTypeComposer<any>; output?: ObjectTypeComposer | UnionTypeComposer }[];
+  typeComposersList: {
+    input?: AnyTypeComposer<any>;
+    output?: ObjectTypeComposer | UnionTypeComposer;
+  }[];
   subSchemaAndTypeComposers: JSONSchemaObject & TypeComposers;
   logger: Logger;
 }
@@ -33,7 +36,7 @@ export function getContainerTC(schemaComposer: SchemaComposer, output: ComposeIn
         type: output as any,
         resolve: root => root,
       },
-    })
+    }),
   );
 }
 
@@ -84,7 +87,9 @@ export function getUnionTypeComposers({
       ajv,
       outputTypeComposers,
       subSchemaAndTypeComposers,
-      (subSchemaAndTypeComposers.output as UnionTypeComposer).getExtension('statusCodeOneOfIndexMap') as any
+      (subSchemaAndTypeComposers.output as UnionTypeComposer).getExtension(
+        'statusCodeOneOfIndexMap',
+      ) as any,
     );
 
     (subSchemaAndTypeComposers.output as UnionTypeComposer).setResolveType(resolveType);

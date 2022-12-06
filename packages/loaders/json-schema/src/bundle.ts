@@ -43,7 +43,7 @@ export async function createBundle(
     fetch = crossUndiciFetch,
     logger = new DefaultLogger(name),
     ignoreErrorResponses = false,
-  }: JSONSchemaLoaderBundleOptions
+  }: JSONSchemaLoaderBundleOptions,
 ): Promise<JSONSchemaLoaderBundle> {
   logger.debug(`Creating the dereferenced schema from operations config`);
   const dereferencedSchema = await getDereferencedJSONSchemaFromOperations({
@@ -102,7 +102,7 @@ export async function getGraphQLSchemaFromBundle(
     operationHeaders: additionalOperationHeaders = {},
     queryParams,
     queryStringOptions,
-  }: JSONSchemaLoaderBundleToGraphQLSchemaOptions = {}
+  }: JSONSchemaLoaderBundleToGraphQLSchemaOptions = {},
 ): Promise<GraphQLSchema> {
   logger.info(`Dereferencing the bundle`);
   const fullyDeferencedSchema = await dereferenceObject(referencedSchema, {
@@ -113,7 +113,10 @@ export async function getGraphQLSchemaFromBundle(
 
   let operationHeaders = {};
   if (typeof additionalOperationHeaders === 'function') {
-    operationHeaders = async (resolverData: ResolverData, operationConfig: JSONSchemaOperationConfig) => {
+    operationHeaders = async (
+      resolverData: ResolverData,
+      operationConfig: JSONSchemaOperationConfig,
+    ) => {
       const result = await additionalOperationHeaders(resolverData, operationConfig);
       return {
         ...bundledOperationHeaders,

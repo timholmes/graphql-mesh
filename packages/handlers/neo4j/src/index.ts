@@ -53,7 +53,14 @@ export default class Neo4JHandler implements MeshHandler {
   fetchFn: MeshFetch;
   importFn: ImportFn;
 
-  constructor({ config, baseDir, pubsub, store, logger, importFn }: MeshHandlerOptions<YamlConfig.Neo4JHandler>) {
+  constructor({
+    config,
+    baseDir,
+    pubsub,
+    store,
+    logger,
+    importFn,
+  }: MeshHandlerOptions<YamlConfig.Neo4JHandler>) {
     this.config = config;
     this.baseDir = baseDir;
     this.pubsub = pubsub;
@@ -73,9 +80,12 @@ export default class Neo4JHandler implements MeshHandler {
           logger: this.logger,
         });
       } else {
-        this.logger.info('Inferring the schema from the database: ', `"${this.config.database || 'neo4j'}"`);
+        this.logger.info(
+          'Inferring the schema from the database: ',
+          `"${this.config.database || 'neo4j'}"`,
+        );
         return toGraphQLTypeDefs(() =>
-          driver.session({ database: this.config.database, defaultAccessMode: neo4j.session.READ })
+          driver.session({ database: this.config.database, defaultAccessMode: neo4j.session.READ }),
         );
       }
     });
@@ -83,12 +93,16 @@ export default class Neo4JHandler implements MeshHandler {
 
   async getMeshSource({ fetchFn }: GetMeshSourcePayload): Promise<MeshSource> {
     this.fetchFn = fetchFn;
-    const driver = neo4j.driver(this.config.url, neo4j.auth.basic(this.config.username, this.config.password), {
-      useBigInt: true,
-      logging: {
-        logger: (level, message) => this.logger[level](message),
+    const driver = neo4j.driver(
+      this.config.url,
+      neo4j.auth.basic(this.config.username, this.config.password),
+      {
+        useBigInt: true,
+        logging: {
+          logger: (level, message) => this.logger[level](message),
+        },
       },
-    });
+    );
 
     const id = this.pubsub.subscribe('destroy', async () => {
       this.pubsub.unsubscribe(id);

@@ -33,7 +33,7 @@ describe('Basket', () => {
         return new Response(
           JSON.stringify({
             random: 2,
-          })
+          }),
         );
       },
     });

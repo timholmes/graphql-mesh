@@ -52,7 +52,16 @@ export type JSONSchemaBaseOperationConfigWithJSONRequest = JSONSchemaBaseOperati
   requestBaseBody?: any;
 };
 
-export type HTTPMethod = 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
+export type HTTPMethod =
+  | 'GET'
+  | 'HEAD'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'CONNECT'
+  | 'OPTIONS'
+  | 'TRACE'
+  | 'PATCH';
 
 export type JSONSchemaHTTPBaseOperationConfig = JSONSchemaBaseOperationConfig & {
   path: string;
@@ -84,4 +93,7 @@ export type JSONSchemaOperationConfig =
 
 export type OperationHeadersConfiguration =
   | Record<string, string>
-  | ((data: ResolverData, operationConfig: JSONSchemaOperationConfig) => PromiseOrValue<Record<string, string>>);
+  | ((
+      data: ResolverData,
+      operationConfig: JSONSchemaOperationConfig,
+    ) => PromiseOrValue<Record<string, string>>);

@@ -1,5 +1,9 @@
 import { sanitizeNameForGraphQL } from '@graphql-mesh/utils';
-import { HTTPMethod, JSONSchemaOperationConfig, JSONSchemaOperationResponseConfig } from '@omnigraph/json-schema';
+import {
+  HTTPMethod,
+  JSONSchemaOperationConfig,
+  JSONSchemaOperationResponseConfig,
+} from '@omnigraph/json-schema';
 import { getAbsolutePath, getCwd, JSONSchemaObject } from 'json-machete';
 import { api10, loadApi } from '@ardatan/raml-1-parser';
 import { fetch as crossUndiciFetch } from '@whatwg-node/fetch';
@@ -212,10 +216,15 @@ export async function getJSONSchemaOptionsFromRAMLOptions({
       }
       fieldName =
         fieldName ||
-        getFieldNameFromPath(originalFullRelativeUrl, method, responseByStatusCode['200']?.responseTypeName);
+        getFieldNameFromPath(
+          originalFullRelativeUrl,
+          method,
+          responseByStatusCode['200']?.responseTypeName,
+        );
       if (fieldName) {
         const graphQLFieldName = sanitizeNameForGraphQL(fieldName);
-        const operationType: any = fieldTypeMap[graphQLFieldName] ?? method === 'GET' ? 'query' : 'mutation';
+        const operationType: any =
+          fieldTypeMap[graphQLFieldName] ?? method === 'GET' ? 'query' : 'mutation';
         operations.push({
           type: operationType,
           field: graphQLFieldName,

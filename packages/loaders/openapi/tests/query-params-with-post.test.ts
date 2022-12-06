@@ -22,7 +22,7 @@ describe('Query Params with POST', () => {
             headers: {
               'Content-Type': 'application/json',
             },
-          }
+          },
         );
       },
       cwd: __dirname,

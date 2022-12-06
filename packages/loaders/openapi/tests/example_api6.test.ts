@@ -303,7 +303,8 @@ describe('example_api6', () => {
     expect(result.errors).toBeFalsy();
 
     expect(result.data).toEqual({
-      eateries_by_eatery_breads_by_breadName_dishes_by_dishKey: "Parameters combined: Mike's challah bread pudding",
+      eateries_by_eatery_breads_by_breadName_dishes_by_dishKey:
+        "Parameters combined: Mike's challah bread pudding",
     });
   });
 
@@ -315,7 +316,10 @@ describe('example_api6', () => {
     const query = /* GraphQL */ `
       {
         nestedReferenceInParameter(
-          russianDoll: { name: "Gertrude", nestedDoll: { name: "Tatiana", nestedDoll: { name: "Lidia" } } }
+          russianDoll: {
+            name: "Gertrude"
+            nestedDoll: { name: "Tatiana", nestedDoll: { name: "Lidia" } }
+          }
         )
       }
     `;
@@ -364,7 +368,9 @@ describe('example_api6', () => {
     expect(result.errors).toBeFalsy();
 
     expect(
-      (result.data.__type as any).fields.find((field: { name: string }) => field.name === 'post_inputUnion')
+      (result.data.__type as any).fields.find(
+        (field: { name: string }) => field.name === 'post_inputUnion',
+      ),
     ).toEqual({
       name: 'post_inputUnion',
       args: [

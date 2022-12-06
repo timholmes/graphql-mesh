@@ -1,6 +1,15 @@
-import { GraphQLJSON, ObjectTypeComposer, ObjectTypeComposerFieldConfig, SchemaComposer } from 'graphql-compose';
+import {
+  GraphQLJSON,
+  ObjectTypeComposer,
+  ObjectTypeComposerFieldConfig,
+  SchemaComposer,
+} from 'graphql-compose';
 import { Logger, MeshFetch, MeshPubSub } from '@graphql-mesh/types';
-import { JSONSchemaLinkConfig, JSONSchemaOperationConfig, OperationHeadersConfiguration } from './types.js';
+import {
+  JSONSchemaLinkConfig,
+  JSONSchemaOperationConfig,
+  OperationHeadersConfiguration,
+} from './types.js';
 import { getOperationMetadata, isPubSubOperationConfig, isFileUpload } from './utils.js';
 import { createGraphQLError, memoize1 } from '@graphql-tools/utils';
 import urlJoin from 'url-join';
@@ -42,7 +51,9 @@ const defaultQsOptions: IStringifyOptions = {
   indices: false,
 };
 
-const isListTypeOrNonNullListType = memoize1(function isListTypeOrNonNullListType(type: GraphQLOutputType) {
+const isListTypeOrNonNullListType = memoize1(function isListTypeOrNonNullListType(
+  type: GraphQLOutputType,
+) {
   if (isNonNullType(type)) {
     return isListType(type.ofType);
   }
@@ -55,7 +66,7 @@ function linkResolver(
   root: any,
   args: any,
   context: any,
-  info: GraphQLResolveInfo
+  info: GraphQLResolveInfo,
 ) {
   for (const argKey in linkObjArgs) {
     const argInterpolation = linkObjArgs[argKey];
@@ -98,7 +109,7 @@ export async function addExecutionLogicToComposer(
     pubsub: globalPubsub,
     queryParams,
     queryStringOptions = {},
-  }: AddExecutionLogicToComposerOptions
+  }: AddExecutionLogicToComposerOptions,
 ) {
   logger.debug(`Attaching execution logic to the schema`);
   queryStringOptions = { ...defaultQsOptions, ...queryStringOptions };
@@ -112,14 +123,20 @@ export async function addExecutionLogicToComposer(
     const field = rootTypeComposer.getField(fieldName);
 
     if (isPubSubOperationConfig(operationConfig)) {
-      field.description = operationConfig.description || `PubSub Topic: ${operationConfig.pubsubTopic}`;
+      field.description =
+        operationConfig.description || `PubSub Topic: ${operationConfig.pubsubTopic}`;
       field.subscribe = (root, args, context, info) => {
         const pubsub = context?.pubsub || globalPubsub;
         if (!pubsub) {
-          return new GraphQLError(`You should have PubSub defined in either the config or the context!`);
+          return new GraphQLError(
+            `You should have PubSub defined in either the config or the context!`,
+          );
         }
         const interpolationData = { root, args, context, info, env: process.env };
-        let pubsubTopic: string = stringInterpolator.parse(operationConfig.pubsubTopic, interpolationData);
+        let pubsubTopic: string = stringInterpolator.parse(
+          operationConfig.pubsubTopic,
+          interpolationData,
+        );
         if (pubsubTopic.startsWith('webhook:')) {
           const [, expectedMethod, expectedUrl] = pubsubTopic.split(':');
           const expectedPath = new URL(expectedUrl, 'http://localhost').pathname;
@@ -156,7 +173,10 @@ ${operationConfig.description || ''}
         const headers: Record<string, any> = {};
         for (const headerName in operationHeadersObj) {
           const nonInterpolatedValue = operationHeadersObj[headerName];
-          const interpolatedValue = stringInterpolator.parse(nonInterpolatedValue, interpolationData);
+          const interpolatedValue = stringInterpolator.parse(
+            nonInterpolatedValue,
+            interpolationData,
+          );
           if (interpolatedValue) {
             headers[headerName.toLowerCase()] = interpolatedValue;
           }
@@ -164,7 +184,10 @@ ${operationConfig.description || ''}
         if (operationConfig?.headers) {
           for (const headerName in operationConfig.headers) {
             const nonInterpolatedValue = operationConfig.headers[headerName];
-            const interpolatedValue = stringInterpolator.parse(nonInterpolatedValue, interpolationData);
+            const interpolatedValue = stringInterpolator.parse(
+              nonInterpolatedValue,
+              interpolationData,
+            );
             if (interpolatedValue) {
               headers[headerName.toLowerCase()] = interpolatedValue;
             }
@@ -187,7 +210,8 @@ ${operationConfig.description || ''}
             }
             requestInit.body = new Uint8Array(chunks);
 
-            const [, contentType] = Object.entries(headers).find(([key]) => key.toLowerCase() === 'content-type') || [];
+            const [, contentType] =
+              Object.entries(headers).find(([key]) => key.toLowerCase() === 'content-type') || [];
             if (!contentType) {
               headers['content-type'] = binaryUpload.mimetype;
             }
@@ -210,10 +234,11 @@ ${operationConfig.description || ''}
           const input = (args.input = resolveDataByUnionInputType(
             args.input,
             field.args?.input?.type?.getType(),
-            schemaComposer
+            schemaComposer,
           ));
           if (input != null) {
-            const [, contentType] = Object.entries(headers).find(([key]) => key.toLowerCase() === 'content-type') || [];
+            const [, contentType] =
+              Object.entries(headers).find(([key]) => key.toLowerCase() === 'content-type') || [];
             if (contentType?.startsWith('application/x-www-form-urlencoded')) {
               requestInit.body = qsStringify(input, queryStringOptions);
             } else if (contentType?.startsWith('multipart/form-data')) {
@@ -228,11 +253,15 @@ ${operationConfig.description || ''}
                     if (inputValue instanceof File) {
                       formDataValue = inputValue;
                     } else if (inputValue.name && inputValue instanceof Blob) {
-                      formDataValue = new File([inputValue], (inputValue as File).name, { type: inputValue.type });
+                      formDataValue = new File([inputValue], (inputValue as File).name, {
+                        type: inputValue.type,
+                      });
                     } else if (inputValue.arrayBuffer) {
                       const arrayBuffer = await inputValue.arrayBuffer();
                       if (inputValue.name) {
-                        formDataValue = new File([arrayBuffer], inputValue.name, { type: inputValue.type });
+                        formDataValue = new File([arrayBuffer], inputValue.name, {
+                          type: inputValue.type,
+                        });
                       } else {
                         formDataValue = new Blob([arrayBuffer], { type: inputValue.type });
                       }
@@ -263,7 +292,7 @@ ${operationConfig.description || ''}
             }
             const interpolatedQueryParam = stringInterpolator.parse(
               queryParams[queryParamName].toString(),
-              interpolationData
+              interpolationData,
             );
             const queryParamsString = qsStringify(
               {
@@ -272,7 +301,7 @@ ${operationConfig.description || ''}
               {
                 ...queryStringOptions,
                 ...operationConfig.queryStringOptionsByParam?.[queryParamName],
-              }
+              },
             );
             fullPath += fullPath.includes('?') ? '&' : '?';
             fullPath += queryParamsString;
@@ -293,7 +322,10 @@ ${operationConfig.description || ''}
                 ...operationConfig.queryStringOptionsByParam?.[queryParamName],
               };
               let queryParamObj = argValue;
-              if (Array.isArray(argValue) || !(typeof argValue === 'object' && opts.destructObject)) {
+              if (
+                Array.isArray(argValue) ||
+                !(typeof argValue === 'object' && opts.destructObject)
+              ) {
                 queryParamObj = {
                   [queryParamName]: argValue,
                 };
@@ -308,14 +340,17 @@ ${operationConfig.description || ''}
         operationLogger.debug(`=> Fetching `, fullPath, `=>`, requestInit);
         const fetch: typeof globalFetch = context?.fetch || globalFetch;
         if (!fetch) {
-          return createGraphQLError(`You should have fetch defined in either the config or the context!`, {
-            extensions: {
-              request: {
-                url: fullPath,
-                method: httpMethod,
+          return createGraphQLError(
+            `You should have fetch defined in either the config or the context!`,
+            {
+              extensions: {
+                request: {
+                  url: fullPath,
+                  method: httpMethod,
+                },
               },
             },
-          });
+          );
         }
         // Trick to pass `sourceName` to the `fetch` function for tracing
         const response = await fetch(fullPath, requestInit, context, {
@@ -378,7 +413,7 @@ ${operationConfig.description || ''}
                   },
                   responseText,
                 },
-              }
+              },
             );
           }
         }
@@ -401,7 +436,7 @@ ${operationConfig.description || ''}
                   },
                   responseJson,
                 },
-              }
+              },
             );
           }
         }
@@ -411,11 +446,15 @@ ${operationConfig.description || ''}
         const isListReturnType = isListTypeOrNonNullListType(field.type.getType());
         const isArrayResponse = Array.isArray(responseJson);
         if (isListReturnType && !isArrayResponse) {
-          operationLogger.debug(`Response is not array but return type is list. Normalizing the response`);
+          operationLogger.debug(
+            `Response is not array but return type is list. Normalizing the response`,
+          );
           responseJson = [responseJson];
         }
         if (!isListReturnType && isArrayResponse) {
-          operationLogger.debug(`Response is array but return type is not list. Normalizing the response`);
+          operationLogger.debug(
+            `Response is array but return type is not list. Normalizing the response`,
+          );
           responseJson = responseJson[0];
         }
 
@@ -469,7 +508,9 @@ ${operationConfig.description || ''}
                               return args[prop] || args.input?.[prop] || obj?.[prop];
                             },
                             has(_, prop) {
-                              return prop in args || (args.input && prop in args.input) || obj?.[prop];
+                              return (
+                                prop in args || (args.input && prop in args.input) || obj?.[prop]
+                              );
                             },
                           });
                         case 'header':
@@ -478,7 +519,7 @@ ${operationConfig.description || ''}
                           return requestInit.body;
                       }
                     },
-                  }
+                  },
                 );
               },
             },
@@ -501,12 +542,14 @@ ${operationConfig.description || ''}
                               return args[prop] || args.input?.[prop] || obj?.[prop];
                             },
                             has(_, prop) {
-                              return prop in args || (args.input && prop in args.input) || obj?.[prop];
+                              return (
+                                prop in args || (args.input && prop in args.input) || obj?.[prop]
+                              );
                             },
                           });
                       }
                     },
-                  }
+                  },
                 );
               },
             },
@@ -519,7 +562,10 @@ ${operationConfig.description || ''}
           : addResponseMetadata(responseJson);
       };
 
-      const handleLinkMap = (linkMap: Record<string, JSONSchemaLinkConfig>, typeTC: ObjectTypeComposer) => {
+      const handleLinkMap = (
+        linkMap: Record<string, JSONSchemaLinkConfig>,
+        typeTC: ObjectTypeComposer,
+      ) => {
         for (const linkName in linkMap) {
           typeTC.addFields({
             [linkName]: () => {
@@ -538,7 +584,9 @@ ${operationConfig.description || ''}
                 } catch {}
               }
               if (!targetField) {
-                logger.debug(`Field ${linkObj.fieldName} not found in ${name} for link ${linkName}`);
+                logger.debug(
+                  `Field ${linkObj.fieldName} not found in ${name} for link ${linkName}`,
+                );
               }
               linkResolverFieldMap[linkName] = (root, args, context, info) =>
                 linkResolver(linkObj.args, targetField.resolve, root, args, context, info);
@@ -582,7 +630,8 @@ ${operationConfig.description || ''}
 
       if ('responseByStatusCode' in operationConfig) {
         const unionOrSingleTC = schemaComposer.getAnyTC(getNamedType(field.type.getType()));
-        const types = 'getTypes' in unionOrSingleTC ? unionOrSingleTC.getTypes() : [unionOrSingleTC];
+        const types =
+          'getTypes' in unionOrSingleTC ? unionOrSingleTC.getTypes() : [unionOrSingleTC];
         const statusCodeOneOfIndexMap =
           (unionOrSingleTC.getExtension('statusCodeOneOfIndexMap') as Record<string, number>) || {};
         for (const statusCode in operationConfig.responseByStatusCode) {

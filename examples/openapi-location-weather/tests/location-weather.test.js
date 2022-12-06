@@ -18,7 +18,7 @@ describe('Location Weather', () => {
     expect(
       printSchemaWithDirectives(lexicographicSortSchema(schema), {
         descriptions: false,
-      })
+      }),
     ).toMatchSnapshot('location-weather-schema');
   });
   it('should give correct response for todayForecast', async () => {

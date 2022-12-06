@@ -79,7 +79,7 @@ describe('OpenAPI Loader: example_api7', () => {
       JSON.stringify({
         method: 'POST',
         userName,
-      })
+      }),
     );
 
     setTimeout(async () => {
@@ -123,7 +123,7 @@ describe('OpenAPI Loader: example_api7', () => {
               status: false,
             },
           },
-        })}`
+        })}`,
       );
       break;
     }

@@ -3,10 +3,16 @@ import { asArray } from '@graphql-tools/utils';
 import { SchemaComposer } from 'graphql-compose';
 import { sanitizeNameForGraphQL } from '@graphql-mesh/utils';
 
-export function resolveDataByUnionInputType(data: any, type: GraphQLInputType, schemaComposer: SchemaComposer): any {
+export function resolveDataByUnionInputType(
+  data: any,
+  type: GraphQLInputType,
+  schemaComposer: SchemaComposer,
+): any {
   if (data) {
     if (isListType(type)) {
-      return asArray(data).map(elem => resolveDataByUnionInputType(elem, type.ofType, schemaComposer));
+      return asArray(data).map(elem =>
+        resolveDataByUnionInputType(elem, type.ofType, schemaComposer),
+      );
     }
     if (isNonNullType(type)) {
       return resolveDataByUnionInputType(data, type.ofType, schemaComposer);
@@ -20,7 +26,11 @@ export function resolveDataByUnionInputType(data: any, type: GraphQLInputType, s
         const field = fieldMap[fieldName];
         if (field) {
           if (isOneOf) {
-            const resolvedData = resolveDataByUnionInputType(data[fieldName], field.type, schemaComposer);
+            const resolvedData = resolveDataByUnionInputType(
+              data[fieldName],
+              field.type,
+              schemaComposer,
+            );
             return resolvedData;
           }
           const fieldData = data[fieldName];

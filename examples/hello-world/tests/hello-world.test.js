@@ -15,7 +15,7 @@ describe('Hello World', () => {
     expect(
       introspectionFromSchema(lexicographicSortSchema(schema), {
         descriptions: false,
-      })
+      }),
     ).toMatchSnapshot();
   });
   it('should give correct response', async () => {

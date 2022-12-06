@@ -98,7 +98,7 @@ describe('Execution', () => {
               headers: {
                 'Content-Type': 'application/json',
               },
-            }
+            },
           );
         },
         baseUrl: 'http://localhost:3000',
@@ -161,7 +161,7 @@ describe('Execution', () => {
               headers: {
                 'Content-Type': 'application/json',
               },
-            }
+            },
           );
         },
         baseUrl: 'http://localhost:3000',
@@ -205,7 +205,9 @@ describe('Execution', () => {
       expect(result).toEqual({
         data: {
           test: {
-            url: `http://localhost:3000/test?foo${encodeURIComponent('[0]')}=bar&foo${encodeURIComponent('[1]')}=baz`,
+            url: `http://localhost:3000/test?foo${encodeURIComponent(
+              '[0]',
+            )}=bar&foo${encodeURIComponent('[1]')}=baz`,
           },
         },
       });
@@ -227,7 +229,7 @@ describe('Execution', () => {
               headers: {
                 'Content-Type': 'application/json',
               },
-            }
+            },
           );
         },
         baseUrl: 'http://localhost:3000',
@@ -271,7 +273,9 @@ describe('Execution', () => {
       expect(result).toEqual({
         data: {
           test: {
-            url: `http://localhost:3000/test?foo${encodeURIComponent('[]')}=bar&foo${encodeURIComponent('[]')}=baz`,
+            url: `http://localhost:3000/test?foo${encodeURIComponent(
+              '[]',
+            )}=bar&foo${encodeURIComponent('[]')}=baz`,
           },
         },
       });
@@ -293,7 +297,7 @@ describe('Execution', () => {
               headers: {
                 'Content-Type': 'application/json',
               },
-            }
+            },
           );
         },
         baseUrl: 'http://localhost:3000',
@@ -361,7 +365,7 @@ describe('Execution', () => {
               headers: {
                 'Content-Type': 'application/json',
               },
-            }
+            },
           );
         },
         baseUrl: 'http://localhost:3000',

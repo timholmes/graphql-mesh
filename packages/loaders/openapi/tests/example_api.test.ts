@@ -1,5 +1,13 @@
 /* eslint-disable import/no-nodejs-modules */
-import { execute, graphql, GraphQLInputObjectType, GraphQLObjectType, GraphQLSchema, parse, validate } from 'graphql';
+import {
+  execute,
+  graphql,
+  GraphQLInputObjectType,
+  GraphQLObjectType,
+  GraphQLSchema,
+  parse,
+  validate,
+} from 'graphql';
 import 'json-bigint-patch';
 import { loadGraphQLSchemaFromOpenAPI } from '../src/loadGraphQLSchemaFromOpenAPI.js';
 
@@ -42,7 +50,7 @@ describe('example_api', () => {
         fetch,
         source: './fixtures/example_oas.json',
         cwd: __dirname,
-      })
+      }),
     ).toMatchSnapshot();
   });
 
@@ -909,7 +917,10 @@ describe('example_api', () => {
 
     expect(result).toEqual({
       data: {
-        getProductReviews: [{ timestamp: BigInt(1502787600000000) }, { timestamp: BigInt(1502787400000000) }],
+        getProductReviews: [
+          { timestamp: BigInt(1502787600000000) },
+          { timestamp: BigInt(1502787400000000) },
+        ],
       },
     });
   });
@@ -1120,13 +1131,15 @@ describe('example_api', () => {
           },
         },
       });
-    }
+    },
   );
 
   it('Request data is correctly de-sanitized to be sent', async () => {
     const query = /* GraphQL */ `
       mutation {
-        post_product_with_id(input: { product_name: "Soccer ball", product_id: "ball123", product_tag: "sports" }) {
+        post_product_with_id(
+          input: { product_name: "Soccer ball", product_id: "ball123", product_tag: "sports" }
+        ) {
           product_name
           product_id
           product_tag
@@ -1174,8 +1187,8 @@ describe('example_api', () => {
         execute({
           schema: createdSchema,
           document: parse(query),
-        })
-      )
+        }),
+      ),
     );
 
     expect(result1).toEqual({
@@ -1406,7 +1419,7 @@ describe('example_api', () => {
     expect(
       (result.data.__type as any).fields.find((field: { name: string }) => {
         return field.name === 'familyCircular';
-      })
+      }),
     ).toEqual({
       name: 'familyCircular',
       type: {
@@ -1670,7 +1683,10 @@ describe('example_api', () => {
   it('Handle input objects without defined properties with arbitrary GraphQL JSON type', async () => {
     const query = /* GraphQL */ `
       mutation {
-        postOfficeTrashCan(input: { type: "sandwich", message: "moldy", tasteRating: 0 }, username: "arlene") {
+        postOfficeTrashCan(
+          input: { type: "sandwich", message: "moldy", tasteRating: 0 }
+          username: "arlene"
+        ) {
           contents
         }
       }
@@ -1752,7 +1768,7 @@ describe('example_api', () => {
     expect(
       (result.data.__type as any).fields.find((field: { name: string }) => {
         return field.name === 'id';
-      })
+      }),
     ).toEqual({
       name: 'id',
       type: {
@@ -1867,7 +1883,7 @@ describe('example_api', () => {
     expect(
       (result1.data.__schema as any).queryType.fields.find((field: { name: string }) => {
         return field.name === 'getUserByUsername';
-      })
+      }),
     ).toEqual({
       name: 'getUserByUsername',
       description: 'Returns a user from the system.',
@@ -1876,19 +1892,19 @@ describe('example_api', () => {
     expect(
       (result1.data.__schema as any).mutationType.fields.find((field: { name: string }) => {
         return field.name === 'getUserByUsername';
-      })
+      }),
     ).toEqual(undefined);
 
     expect(
       (result2.data.__schema as any).queryType.fields.find((field: { name: string }) => {
         return field.name === 'getUserByUsername';
-      })
+      }),
     ).toEqual(undefined);
 
     expect(
       (result2.data.__schema as any).mutationType.fields.find((field: { name: string }) => {
         return field.name === 'getUserByUsername';
-      })
+      }),
     ).toEqual({
       name: 'getUserByUsername',
       description: 'Returns a user from the system.',
@@ -1987,7 +2003,10 @@ describe('example_api', () => {
       fetch,
       operationHeaders: (_, operationConfig) => {
         if ('method' in operationConfig) {
-          if (operationConfig.method.toLowerCase() === 'get' && operationConfig.path === '/status') {
+          if (
+            operationConfig.method.toLowerCase() === 'get' &&
+            operationConfig.path === '/status'
+          ) {
             return {
               exampleHeader: 'some-value',
             };
@@ -2056,7 +2075,7 @@ describe('example_api', () => {
     expect(
       (result.data.__type as any).fields.find((field: { name: string }) => {
         return field.name === 'family';
-      })
+      }),
     ).toEqual({
       name: 'family',
       type: {
@@ -2228,7 +2247,9 @@ describe('example_api', () => {
     const ast = parse(query);
     const errors = validate(schema, ast);
     expect(errors.length).toBe(1);
-    expect(errors[0].message).toEqual('Value "medium" does not exist in "queryInput_getSnack_snack_size" enum.');
+    expect(errors[0].message).toEqual(
+      'Value "medium" does not exist in "queryInput_getSnack_snack_size" enum.',
+    );
   });
 
   it('Format the query params appropriately when style and explode are set to true', async () => {

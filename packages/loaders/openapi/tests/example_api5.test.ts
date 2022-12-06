@@ -104,7 +104,9 @@ describe('OpenAPI Loader: Testing the naming convention', () => {
   it('Naming convention test with GraphQL unsafe values and a parameter', async () => {
     const query = /* GraphQL */ `
       {
-        w_e_i_r_d___n_a_m_e2_by_f_u_n_k_y___p_a_r_a_m_e_t_e_r(f_u_n_k_y___p_a_r_a_m_e_t_e_r: "Arnold") {
+        w_e_i_r_d___n_a_m_e2_by_f_u_n_k_y___p_a_r_a_m_e_t_e_r(
+          f_u_n_k_y___p_a_r_a_m_e_t_e_r: "Arnold"
+        ) {
           data
         }
       }

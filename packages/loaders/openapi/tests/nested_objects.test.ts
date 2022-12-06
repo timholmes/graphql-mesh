@@ -40,7 +40,10 @@ describe('OpanAPI: nested objects', () => {
   it('Get response', async () => {
     const query = /* GraphQL */ `
       {
-        searchCollection(collectionName: "CHECKOUT_SUPER_PRODUCT", searchParameters: { q: "water", query_by: "name" }) {
+        searchCollection(
+          collectionName: "CHECKOUT_SUPER_PRODUCT"
+          searchParameters: { q: "water", query_by: "name" }
+        ) {
           ... on SearchResult {
             hits {
               document

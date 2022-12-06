@@ -10,7 +10,11 @@ import {
   MeshSource,
   MeshFetch,
 } from '@graphql-mesh/types';
-import { JSONSchemaLoaderBundle, createBundle, getGraphQLSchemaFromBundle } from '@omnigraph/json-schema';
+import {
+  JSONSchemaLoaderBundle,
+  createBundle,
+  getGraphQLSchemaFromBundle,
+} from '@omnigraph/json-schema';
 import { loadFromModuleExportExpression, readFileOrUrl } from '@graphql-mesh/utils';
 import { getInterpolatedHeadersFactory } from '@graphql-mesh/string-interpolation';
 import { process } from '@graphql-mesh/cross-helpers';
@@ -38,7 +42,10 @@ export default class JsonSchemaHandler implements MeshHandler {
     this.config = config;
     this.baseDir = baseDir;
     this.importFn = importFn;
-    this.bundleStoreProxy = store.proxy('jsonSchemaBundle', PredefinedProxyOptions.JsonWithoutValidation);
+    this.bundleStoreProxy = store.proxy(
+      'jsonSchemaBundle',
+      PredefinedProxyOptions.JsonWithoutValidation,
+    );
     this.pubsub = pubsub;
     this.logger = logger;
   }
@@ -66,7 +73,8 @@ export default class JsonSchemaHandler implements MeshHandler {
           cwd: this.baseDir,
           fetch: this.fetchFn,
           logger: this.logger,
-          operationHeaders: typeof config.operationHeaders === 'string' ? {} : config.operationHeaders,
+          operationHeaders:
+            typeof config.operationHeaders === 'string' ? {} : config.operationHeaders,
         });
       });
     }
@@ -77,11 +85,14 @@ export default class JsonSchemaHandler implements MeshHandler {
     const bundle = await this.getDereferencedBundle();
     const operationHeadersConfig =
       typeof this.config.operationHeaders === 'string'
-        ? await loadFromModuleExportExpression<Record<string, string>>(this.config.operationHeaders, {
-            cwd: this.baseDir,
-            importFn: this.importFn,
-            defaultExportName: 'default',
-          })
+        ? await loadFromModuleExportExpression<Record<string, string>>(
+            this.config.operationHeaders,
+            {
+              cwd: this.baseDir,
+              importFn: this.importFn,
+              defaultExportName: 'default',
+            },
+          )
         : this.config.operationHeaders;
     const schema = await getGraphQLSchemaFromBundle(bundle, {
       cwd: this.baseDir,

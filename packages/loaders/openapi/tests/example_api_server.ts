@@ -322,7 +322,10 @@ export function startServer() {
             };
 
             for (const user in Auth) {
-              if (Auth[user].username === credentials.username && Auth[user].password === credentials.password) {
+              if (
+                Auth[user].username === credentials.username &&
+                Auth[user].password === credentials.password
+              ) {
                 return undefined;
               }
             }
@@ -336,7 +339,7 @@ export function startServer() {
                 headers: {
                   'Content-Type': 'application/json',
                 },
-              }
+              },
             );
           }
         } else if (authType === 'Bearer') {
@@ -360,7 +363,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     } else if (cookieHeader) {
       for (const user in Auth) {
@@ -377,7 +380,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     } else if ('access_token' in req.query) {
       for (const user in Auth) {
@@ -394,7 +397,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     } else {
       return new Response(
@@ -406,7 +409,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   };
@@ -445,7 +448,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -468,7 +471,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -494,7 +497,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -518,7 +521,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -579,7 +582,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -594,17 +597,20 @@ export function startServer() {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
   });
 
   app.get('/api/cookie', (req: IttyRequest & { cookies: Record<string, string> }) => {
     if (req.cookies && req.cookies.cookie_type && req.cookies.cookie_size) {
-      return new Response(`You ordered a ${req.cookies.cookie_size} ${req.cookies.cookie_type} cookie!`, {
-        headers: {
-          'Content-Type': 'text/plain',
+      return new Response(
+        `You ordered a ${req.cookies.cookie_size} ${req.cookies.cookie_type} cookie!`,
+        {
+          headers: {
+            'Content-Type': 'text/plain',
+          },
         },
-      });
+      );
     } else {
       return new Response('Need cookie header parameter', {
         status: 400,
@@ -624,7 +630,7 @@ export function startServer() {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
   });
 
@@ -676,7 +682,7 @@ export function startServer() {
             headers: {
               'Content-Type': 'application/json',
             },
-          }
+          },
         );
       }
     } else {
@@ -706,7 +712,7 @@ export function startServer() {
         }),
         {
           status: 400,
-        }
+        },
       );
     }
   });
@@ -731,7 +737,7 @@ export function startServer() {
         }),
         {
           status: 400,
-        }
+        },
       );
     }
   });
@@ -754,7 +760,7 @@ export function startServer() {
         }),
         {
           status: 400,
-        }
+        },
       );
     }
   });
@@ -784,7 +790,7 @@ export function startServer() {
         }),
         {
           status: 400,
-        }
+        },
       );
     }
   });
@@ -811,7 +817,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -833,7 +839,7 @@ export function startServer() {
         }),
         {
           status: 400,
-        }
+        },
       );
     }
   });
@@ -860,7 +866,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -884,7 +890,7 @@ export function startServer() {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
   });
 
@@ -909,7 +915,10 @@ export function startServer() {
   });
 
   app.get('/api/status', (req: Request & IttyRequest) => {
-    if (typeof req.query.limit !== 'undefined' && typeof req.headers.get('exampleHeader') !== 'undefined') {
+    if (
+      typeof req.query.limit !== 'undefined' &&
+      typeof req.headers.get('exampleHeader') !== 'undefined'
+    ) {
       return new Response('Ok', {
         status: 200,
         headers: {
@@ -926,7 +935,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -950,7 +959,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -973,7 +982,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -1004,7 +1013,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -1031,7 +1040,7 @@ export function startServer() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
     }
   });
@@ -1046,7 +1055,7 @@ export function startServer() {
         headers: {
           'Content-Type': 'application/json',
         },
-      }
+      },
     );
   });
 

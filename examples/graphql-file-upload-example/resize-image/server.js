@@ -31,7 +31,7 @@ module.exports = function startServer() {
         () =>
           new Promise(resolve => {
             server.close(resolve);
-          })
+          }),
       );
     });
   });

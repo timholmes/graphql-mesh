@@ -12,7 +12,7 @@ import { OpenAPILoaderOptions } from './types.js';
  */
 export async function createBundle(
   name: string,
-  openApiLoaderOptions: OpenAPILoaderOptions
+  openApiLoaderOptions: OpenAPILoaderOptions,
 ): Promise<OpenAPILoaderBundle> {
   const { operations, baseUrl, cwd, fetch, schemaHeaders, operationHeaders } =
     await getJSONSchemaOptionsFromOpenAPIOptions(name, openApiLoaderOptions);

@@ -10,14 +10,14 @@ export function startServer(): Promise<Server> {
   const app = createServerAdapter(
     Router({
       base: '/api',
-    })
+    }),
   );
   app.get(
     '/user',
     () =>
       new Response(null, {
         status: 404,
-      })
+      }),
   );
 
   const server = createServer(app);

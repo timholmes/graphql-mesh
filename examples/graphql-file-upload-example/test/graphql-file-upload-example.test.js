@@ -34,7 +34,7 @@ describe('Upload Example', () => {
       `,
       {
         upload: file,
-      }
+      },
     );
     expect(result?.data?.uploadFile?.filename).toBe('test.txt');
   });

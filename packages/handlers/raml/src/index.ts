@@ -19,11 +19,21 @@ export default class RAMLHandler implements MeshHandler {
   private logger: Logger;
   private fetchFn: MeshFetch;
   private pubsub: MeshPubSub;
-  constructor({ name, config, baseDir, store, pubsub, logger }: MeshHandlerOptions<YamlConfig.RAMLHandler>) {
+  constructor({
+    name,
+    config,
+    baseDir,
+    store,
+    pubsub,
+    logger,
+  }: MeshHandlerOptions<YamlConfig.RAMLHandler>) {
     this.name = name;
     this.config = config;
     this.baseDir = baseDir;
-    this.bundleStoreProxy = store.proxy('jsonSchemaBundle', PredefinedProxyOptions.JsonWithoutValidation);
+    this.bundleStoreProxy = store.proxy(
+      'jsonSchemaBundle',
+      PredefinedProxyOptions.JsonWithoutValidation,
+    );
     this.pubsub = pubsub;
     this.logger = logger;
   }
@@ -36,10 +46,12 @@ export default class RAMLHandler implements MeshHandler {
         fetch: this.fetchFn,
         logger: this.logger,
         ignoreErrorResponses: this.config.ignoreErrorResponses,
-        selectQueryOrMutationField: this.config.selectQueryOrMutationField?.map(({ type, fieldName }) => ({
-          type: type.toLowerCase() as any,
-          fieldName,
-        })),
+        selectQueryOrMutationField: this.config.selectQueryOrMutationField?.map(
+          ({ type, fieldName }) => ({
+            type: type.toLowerCase() as any,
+            fieldName,
+          }),
+        ),
       });
     });
   }

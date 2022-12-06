@@ -2,7 +2,10 @@
 import { createYoga } from 'graphql-yoga';
 import { fetch, File, FormData } from '@whatwg-node/fetch';
 import { graphql, GraphQLSchema } from 'graphql';
-import { startServer as startAPIServer, stopServer as stopAPIServer } from './file_upload_api_server.js';
+import {
+  startServer as startAPIServer,
+  stopServer as stopAPIServer,
+} from './file_upload_api_server.js';
 import loadGraphQLSchemaFromOpenAPI from '../src/index.js';
 import { createServer, Server } from 'http';
 import { AddressInfo } from 'net';

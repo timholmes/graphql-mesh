@@ -4,5 +4,5 @@ import { graphqlMesh, DEFAULT_CLI_PARAMS } from '.';
 import { handleFatalError } from './handleFatalError.js';
 
 graphqlMesh(DEFAULT_CLI_PARAMS).catch(e =>
-  handleFatalError(e, new DefaultLogger(DEFAULT_CLI_PARAMS.initialLoggerPrefix))
+  handleFatalError(e, new DefaultLogger(DEFAULT_CLI_PARAMS.initialLoggerPrefix)),
 );

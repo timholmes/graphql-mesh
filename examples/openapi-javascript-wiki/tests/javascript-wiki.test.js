@@ -17,13 +17,13 @@ describe('JavaScript Wiki', () => {
     expect(
       printSchema(lexicographicSortSchema(schema), {
         descriptions: false,
-      })
+      }),
     ).toMatchSnapshot('javascript-wiki-schema');
   });
   it('should give correct response for viewsInPastMonth', async () => {
     const viewsInPastMonthQuery = await readFile(
       join(__dirname, '../example-queries/views-in-past-month.graphql'),
-      'utf8'
+      'utf8',
     );
     const { execute } = await mesh$;
     const result = await execute(viewsInPastMonthQuery);
@@ -33,7 +33,7 @@ describe('JavaScript Wiki', () => {
   it('should give correct response for wikipediaMetrics within specific range', async () => {
     const wikipediaMetricsQuery = await readFile(
       join(__dirname, '../example-queries/wikipedia-metrics.graphql'),
-      'utf8'
+      'utf8',
     );
     const { execute } = await mesh$;
     const result = await execute(wikipediaMetricsQuery);

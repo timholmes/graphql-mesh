@@ -9,11 +9,14 @@ export function getTypeResolverFromOutputTCs(
   ajv: Ajv,
   outputTypeComposers: (ObjectTypeComposer | UnionTypeComposer)[],
   subSchemaAndTypeComposers: JSONSchemaObject & TypeComposers,
-  statusCodeOneOfIndexMap?: Record<string, number>
+  statusCodeOneOfIndexMap?: Record<string, number>,
 ): GraphQLTypeResolver<any, any> {
   const statusCodeTypeMap = new Map<string, ObjectTypeComposer | UnionTypeComposer>();
   for (const statusCode in statusCodeOneOfIndexMap) {
-    statusCodeTypeMap.set(statusCode.toString(), outputTypeComposers[statusCodeOneOfIndexMap[statusCode]]);
+    statusCodeTypeMap.set(
+      statusCode.toString(),
+      outputTypeComposers[statusCodeOneOfIndexMap[statusCode]],
+    );
   }
   const discriminatorField = subSchemaAndTypeComposers.discriminator?.propertyName;
   return function resolveType(data: any, context: any, info: GraphQLResolveInfo) {
@@ -23,7 +26,8 @@ export function getTypeResolverFromOutputTCs(
       return data[discriminatorField];
     }
     if (data.$statusCode && statusCodeOneOfIndexMap) {
-      const type = statusCodeTypeMap.get(data.$statusCode.toString()) || statusCodeTypeMap.get('default');
+      const type =
+        statusCodeTypeMap.get(data.$statusCode.toString()) || statusCodeTypeMap.get('default');
       if (type) {
         if ('getFields' in type) {
           return type.getTypeName();
@@ -40,7 +44,7 @@ export function getTypeResolverFromOutputTCs(
             .filter(property => !property.toString().startsWith('$'))
         : null;
     const allOutputTypeComposers = outputTypeComposers.flatMap(typeComposer =>
-      'getFields' in typeComposer ? typeComposer : typeComposer.getTypeComposers()
+      'getFields' in typeComposer ? typeComposer : typeComposer.getTypeComposers(),
     );
     for (const outputTypeComposer of allOutputTypeComposers) {
       const typeName = outputTypeComposer.getTypeName();
@@ -53,7 +57,9 @@ export function getTypeResolverFromOutputTCs(
           return typeName;
         }
       } else {
-        const validateFn = outputTypeComposer.getExtension('validateWithJSONSchema') as ValidateFunction;
+        const validateFn = outputTypeComposer.getExtension(
+          'validateWithJSONSchema',
+        ) as ValidateFunction;
         if (validateFn) {
           const isValid = validateFn(data);
           if (isValid) {
@@ -79,9 +85,17 @@ export function getTypeResolverFromOutputTCs(
       });
       return error;
     }
-    const error = new GraphQLError(`Received data doesn't met the union`, null, null, null, null, null, {
-      validationErrors,
-    });
+    const error = new GraphQLError(
+      `Received data doesn't met the union`,
+      null,
+      null,
+      null,
+      null,
+      null,
+      {
+        validationErrors,
+      },
+    );
     return error;
   };
 }

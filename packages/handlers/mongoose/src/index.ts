@@ -1,6 +1,13 @@
 import { composeWithMongoose, composeWithMongooseDiscriminators } from 'graphql-compose-mongoose';
 import { SchemaComposer } from 'graphql-compose';
-import { MeshHandlerOptions, MeshPubSub, MeshHandler, MeshSource, YamlConfig, ImportFn } from '@graphql-mesh/types';
+import {
+  MeshHandlerOptions,
+  MeshPubSub,
+  MeshHandler,
+  MeshSource,
+  YamlConfig,
+  ImportFn,
+} from '@graphql-mesh/types';
 import { connect, disconnect, ConnectOptions, Document, Model } from 'mongoose';
 import { loadFromModuleExportExpression } from '@graphql-mesh/utils';
 import { specifiedDirectives } from 'graphql';
@@ -34,7 +41,12 @@ export default class MongooseHandler implements MeshHandler {
   private pubsub: MeshPubSub;
   private importFn: ImportFn;
 
-  constructor({ config, baseDir, pubsub, importFn }: MeshHandlerOptions<YamlConfig.MongooseHandler>) {
+  constructor({
+    config,
+    baseDir,
+    pubsub,
+    importFn,
+  }: MeshHandlerOptions<YamlConfig.MongooseHandler>) {
     this.config = config;
     this.baseDir = baseDir;
     this.pubsub = pubsub;
@@ -57,11 +69,14 @@ export default class MongooseHandler implements MeshHandler {
     await Promise.all([
       Promise.all(
         this.config.models?.map(async modelConfig => {
-          const model = await loadFromModuleExportExpression<Model<Document<any, any, any>>>(modelConfig.path, {
-            defaultExportName: modelConfig.name,
-            cwd: this.baseDir,
-            importFn: this.importFn,
-          });
+          const model = await loadFromModuleExportExpression<Model<Document<any, any, any>>>(
+            modelConfig.path,
+            {
+              defaultExportName: modelConfig.name,
+              cwd: this.baseDir,
+              importFn: this.importFn,
+            },
+          );
           if (!model) {
             throw new Error(`Model ${modelConfig.name} cannot be imported ${modelConfig.path}!`);
           }
@@ -71,15 +86,16 @@ export default class MongooseHandler implements MeshHandler {
               modelQueryOperations.map(async queryOperation =>
                 schemaComposer.Query.addFields({
                   [`${modelConfig.name}_${queryOperation}`]: modelTC.getResolver(queryOperation),
-                })
-              )
+                }),
+              ),
             ),
             Promise.all(
               modelMutationOperations.map(async mutationOperation =>
                 schemaComposer.Mutation.addFields({
-                  [`${modelConfig.name}_${mutationOperation}`]: modelTC.getResolver(mutationOperation),
-                })
-              )
+                  [`${modelConfig.name}_${mutationOperation}`]:
+                    modelTC.getResolver(mutationOperation),
+                }),
+              ),
             ),
           ]);
           const typeName = modelTC.getTypeName();
@@ -89,30 +105,38 @@ export default class MongooseHandler implements MeshHandler {
             argsFromKeys: ids => ({ ids }),
             fieldName: `${typeName}_dataLoaderMany`,
           };
-        }) || []
+        }) || [],
       ),
       Promise.all(
         this.config.discriminators?.map(async discriminatorConfig => {
-          const discriminator = await loadFromModuleExportExpression<any>(discriminatorConfig.path, {
-            defaultExportName: discriminatorConfig.name,
-            cwd: this.baseDir,
-            importFn: this.importFn,
-          });
-          const discriminatorTC = composeWithMongooseDiscriminators(discriminator, discriminatorConfig.options as any);
+          const discriminator = await loadFromModuleExportExpression<any>(
+            discriminatorConfig.path,
+            {
+              defaultExportName: discriminatorConfig.name,
+              cwd: this.baseDir,
+              importFn: this.importFn,
+            },
+          );
+          const discriminatorTC = composeWithMongooseDiscriminators(
+            discriminator,
+            discriminatorConfig.options as any,
+          );
           await Promise.all([
             Promise.all(
               modelQueryOperations.map(async queryOperation =>
                 schemaComposer.Query.addFields({
-                  [`${discriminatorConfig.name}_${queryOperation}`]: discriminatorTC.getResolver(queryOperation),
-                })
-              )
+                  [`${discriminatorConfig.name}_${queryOperation}`]:
+                    discriminatorTC.getResolver(queryOperation),
+                }),
+              ),
             ),
             Promise.all(
               modelMutationOperations.map(async mutationOperation =>
                 schemaComposer.Mutation.addFields({
-                  [`${discriminatorConfig.name}_${mutationOperation}`]: discriminatorTC.getResolver(mutationOperation),
-                })
-              )
+                  [`${discriminatorConfig.name}_${mutationOperation}`]:
+                    discriminatorTC.getResolver(mutationOperation),
+                }),
+              ),
             ),
           ]);
           const typeName = discriminatorTC.getTypeName();
@@ -122,7 +146,7 @@ export default class MongooseHandler implements MeshHandler {
             argsFromKeys: ids => ({ ids }),
             fieldName: `${typeName}_dataLoaderMany`,
           };
-        }) || []
+        }) || [],
       ),
     ]);
 

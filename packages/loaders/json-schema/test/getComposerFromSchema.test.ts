@@ -97,7 +97,7 @@ enum ExampleEnum {
   foo
   bar
   qux
-}`.trim()
+}`.trim(),
     );
   });
   it('should generate a new enum type from enum schema by sanitizing enum keys', async () => {
@@ -211,7 +211,7 @@ enum AdminPermission {
     expect(
       unionComposer.toSDL({
         deep: true,
-      })
+      }),
     ).toBe(outputSchema);
   });
   it('should generate an input union type for oneOf definitions that contain scalar types', async () => {
@@ -237,7 +237,7 @@ enum AdminPermission {
     expect(
       (result.input as InputTypeComposer).toSDL({
         deep: true,
-      })
+      }),
     ).toBe(
       /* GraphQL */ `
 input ExampleOneOf_Input @oneOf {
@@ -250,7 +250,7 @@ ${printType(GraphQLString)}
 input ExampleObject_Input {
   id: String
 }
-    `.trim()
+    `.trim(),
     );
   });
   it('should generate merged object types from allOf definitions', async () => {
@@ -286,7 +286,7 @@ input ExampleAllOf_Input {
   id: String!
   name: String!
 }
-    `.trim()
+    `.trim(),
     );
     expect((result.output as InputTypeComposer).toSDL()).toBe(
       /* GraphQL */ `
@@ -294,7 +294,7 @@ type ExampleAllOf {
   id: String!
   name: String!
 }
-    `.trim()
+    `.trim(),
     );
   });
   it('should generate container types and fields for allOf definitions that contain scalar types', async () => {
@@ -356,7 +356,7 @@ input ExampleAnyOf_Input {
   id: String!
   name: String!
 }
-    `.trim()
+    `.trim(),
     );
     expect((result.output as InputTypeComposer).toSDL()).toBe(
       /* GraphQL */ `
@@ -364,7 +364,7 @@ type ExampleAnyOf {
   id: String!
   name: String!
 }
-    `.trim()
+    `.trim(),
     );
   });
   it('should generate container types and fields for anyOf definitions that contain scalar types', async () => {
@@ -631,7 +631,7 @@ type ExampleAnyOf {
     expect(
       (result.output as ObjectTypeComposer).toSDL({
         deep: true,
-      })
+      }),
     ).toBe(
       /* GraphQL */ `
 type ExampleObject {
@@ -649,7 +649,7 @@ ${printType(GraphQLString)}
 type Bar {
   name: String
 }
-`.trim()
+`.trim(),
     );
   });
   it('should create correct object types from object definition', async () => {
@@ -669,14 +669,14 @@ type Bar {
 input ExampleObject_Input {
   id: String
 }
-     `.trim()
+     `.trim(),
     );
     expect((result.output as InputTypeComposer).toSDL()).toBe(
       /* GraphQL */ `
 type ExampleObject {
   id: String
 }
-     `.trim()
+     `.trim(),
     );
   });
   it('should return GraphQLSchema if object definition given with _schema title', async () => {
@@ -702,7 +702,7 @@ type ExampleObject {
 type Query {
   foo: String
 }
-     `.trim()
+     `.trim(),
     );
   });
   it('should return Query type if object definition given with Query title', async () => {
@@ -722,7 +722,7 @@ type Query {
 type Query {
   foo: String
 }
-     `.trim()
+     `.trim(),
     );
   });
   it('should return Mutation type if object definition given with Query title', async () => {
@@ -742,7 +742,7 @@ type Query {
 type Mutation {
   foo: String
 }
-     `.trim()
+     `.trim(),
     );
   });
   it('should return Subscription type if object definition given with Subscription title', async () => {
@@ -762,7 +762,7 @@ type Mutation {
 type Subscription_ {
   foo: String
 }
-     `.trim()
+     `.trim(),
     );
   });
   it('should add arguments to Query fields with the object definition QueryTitle', async () => {
@@ -805,7 +805,7 @@ type Query {
 }
 
 ${printType(GraphQLString)}
-     `.trim()
+     `.trim(),
     );
   });
   it('should choose correct type in union type generated from oneOf', async () => {

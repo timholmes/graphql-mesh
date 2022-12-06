@@ -3,7 +3,10 @@ import { getDereferencedJSONSchemaFromOperations } from './getDereferencedJSONSc
 import { getGraphQLSchemaFromDereferencedJSONSchema } from './getGraphQLSchemaFromDereferencedJSONSchema.js';
 import { JSONSchemaLoaderOptions } from './types.js';
 
-export async function loadGraphQLSchemaFromJSONSchemas(name: string, options: JSONSchemaLoaderOptions) {
+export async function loadGraphQLSchemaFromJSONSchemas(
+  name: string,
+  options: JSONSchemaLoaderOptions,
+) {
   const logger = options.logger || new DefaultLogger(name);
   const operations = options.operations;
   const cwd = options.cwd || process.cwd();
