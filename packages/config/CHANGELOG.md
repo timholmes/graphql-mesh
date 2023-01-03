@@ -1,5 +1,19 @@
 # @graphql-mesh/config
 
+## 10.0.6
+
+### Patch Changes
+
+- [#4988](https://github.com/Urigo/graphql-mesh/pull/4988)
+  [`ad938f485`](https://github.com/Urigo/graphql-mesh/commit/ad938f485a9b881a0379284ac582c6c599aa1117)
+  Thanks [@renovate](https://github.com/apps/renovate)! - dependencies updates:
+  - Updated dependency
+    [`@whatwg-node/fetch@^0.6.0` ↗︎](https://www.npmjs.com/package/@whatwg-node/fetch/v/0.6.0) (from
+    `^0.5.0`, in `dependencies`)
+- Updated dependencies
+  [[`ad938f485`](https://github.com/Urigo/graphql-mesh/commit/ad938f485a9b881a0379284ac582c6c599aa1117)]:
+  - @graphql-mesh/runtime@0.46.5
+
 ## 10.0.5
 
 ### Patch Changes

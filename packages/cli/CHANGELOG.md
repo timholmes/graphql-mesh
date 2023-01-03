@@ -1,5 +1,38 @@
 # @graphql-mesh/cli
 
+## 0.82.10
+
+### Patch Changes
+
+- [#4984](https://github.com/Urigo/graphql-mesh/pull/4984)
+  [`5c8622ead`](https://github.com/Urigo/graphql-mesh/commit/5c8622ead5588302fa84b0d40e7b25068c17fde1)
+  Thanks [@renovate](https://github.com/apps/renovate)! - dependencies updates:
+
+  - Updated dependency [`json5@2.2.3` ↗︎](https://www.npmjs.com/package/json5/v/2.2.3) (from
+    `2.2.2`, in `dependencies`)
+
+- [#4986](https://github.com/Urigo/graphql-mesh/pull/4986)
+  [`0710f10c7`](https://github.com/Urigo/graphql-mesh/commit/0710f10c7197b57403835edb0678eaff6b4daeca)
+  Thanks [@renovate](https://github.com/apps/renovate)! - dependencies updates:
+
+  - Updated dependency
+    [`tsconfig-paths@4.1.2` ↗︎](https://www.npmjs.com/package/tsconfig-paths/v/4.1.2) (from `4.1.1`,
+    in `dependencies`)
+
+- [#4991](https://github.com/Urigo/graphql-mesh/pull/4991)
+  [`bb5abc15d`](https://github.com/Urigo/graphql-mesh/commit/bb5abc15d8ff9227f5fc9fafe78d1befc7ae0797)
+  Thanks [@renovate](https://github.com/apps/renovate)! - dependencies updates:
+  - Updated dependency [`ajv@8.12.0` ↗︎](https://www.npmjs.com/package/ajv/v/8.12.0) (from `8.11.2`,
+    in `dependencies`)
+- Updated dependencies
+  [[`ad938f485`](https://github.com/Urigo/graphql-mesh/commit/ad938f485a9b881a0379284ac582c6c599aa1117),
+  [`ad938f485`](https://github.com/Urigo/graphql-mesh/commit/ad938f485a9b881a0379284ac582c6c599aa1117),
+  [`bb5abc15d`](https://github.com/Urigo/graphql-mesh/commit/bb5abc15d8ff9227f5fc9fafe78d1befc7ae0797),
+  [`ad938f485`](https://github.com/Urigo/graphql-mesh/commit/ad938f485a9b881a0379284ac582c6c599aa1117)]:
+  - @graphql-mesh/config@10.0.6
+  - @graphql-mesh/http@0.3.8
+  - @graphql-mesh/runtime@0.46.5
+
 ## 0.82.9
 
 ### Patch Changes

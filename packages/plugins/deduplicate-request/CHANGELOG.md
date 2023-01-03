@@ -1,5 +1,16 @@
 # @graphql-mesh/plugin-deduplicate-request
 
+## 0.1.6
+
+### Patch Changes
+
+- [#4988](https://github.com/Urigo/graphql-mesh/pull/4988)
+  [`ad938f485`](https://github.com/Urigo/graphql-mesh/commit/ad938f485a9b881a0379284ac582c6c599aa1117)
+  Thanks [@renovate](https://github.com/apps/renovate)! - dependencies updates:
+  - Updated dependency
+    [`@whatwg-node/fetch@0.6.1` ↗︎](https://www.npmjs.com/package/@whatwg-node/fetch/v/0.6.1) (from
+    `0.5.4`, in `dependencies`)
+
 ## 0.1.5
 
 ### Patch Changes
